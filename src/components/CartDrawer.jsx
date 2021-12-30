@@ -11,7 +11,7 @@ import {
 import { Flex, Box, Text, Link, Spacer, Center } from '@chakra-ui/layout'
 import { Image } from '@chakra-ui/image'
 import { Spinner, Select } from '@chakra-ui/react'
-
+import getSymbolFromCurrency from 'currency-symbol-map'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from './Button'
 
@@ -21,6 +21,7 @@ import { CURRENCIES_QUERY, PRODUCT_CURRENCY_QUERY } from '../queries.graphql'
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import { updateCurrency, updateProducts } from '../features/product/productSlice'
 import { updateCart } from '../features/cart/cartSlice'
+import { formatValue } from '../utils'
 
 
 
@@ -54,7 +55,6 @@ const CartDrawer = ({ isOpen, onClose }) => {
         dispatch(updateCurrency(selectedCurrency))
         productByCurrency.refetch({currency: selectedCurrency})
     }
-    console.log('refetching example with product by currency', productByCurrency.loading, 'data', productByCurrency.data)
 
     return (
         <Drawer
@@ -81,7 +81,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <Box px="6">
                     <Flex justifyContent="space-between" alignItems="center">
                         <Text>SUB TOTAL</Text>
-                        <Text>{currency}{totalPrice}</Text>
+                        <Text>{getSymbolFromCurrency(currency)}{formatValue(totalPrice)}</Text>
                     </Flex>
                 </Box>
                 <DrawerFooter>

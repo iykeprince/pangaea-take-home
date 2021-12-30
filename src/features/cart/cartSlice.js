@@ -20,6 +20,10 @@ export const cartSlice = createSlice({
                 acc[index] = { ...foundItem, price: item.price }
                 return acc;
             }, [])
+            state.totalPrice = state.cartItems.reduce((acc, item) => {
+                acc += item.price;
+                return acc;
+            }, 0)
             console.log('after update', state.cartItems)
         },
         addToCart(state, action) {

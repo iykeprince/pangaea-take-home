@@ -4,6 +4,9 @@ import { Image } from '@chakra-ui/image'
 import CartCounter from './CartCounter'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteFromCart } from '../features/cart/cartSlice'
+import { formatValue } from '../utils'
+import getSymbolFromCurrency from 'currency-symbol-map'
+
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch(); 
@@ -23,7 +26,7 @@ const CartItem = ({ item }) => {
         </Flex>
         <Flex justifyContent="space-evenly">
             <CartCounter item={item} />
-            <Text>{currency}{item.quantity * item.price}</Text>
+            <Text>{getSymbolFromCurrency(currency)}{formatValue(item.quantity * item.price)}</Text>
         </Flex>
     </Box>)
 }
