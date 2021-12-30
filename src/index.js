@@ -6,7 +6,9 @@ import reportWebVitals from './reportWebVitals';
 
 import { ChakraProvider } from '@chakra-ui/react'
 import { Provider } from 'react-redux';
-import store from './app/store';
+import { store, persistor } from './app/store';
+import { PersistGate } from 'redux-persist/integration/react'
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -23,11 +25,13 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
       <ApolloProvider client={client}>
         <ChakraProvider>
           <App />
         </ChakraProvider>
       </ApolloProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

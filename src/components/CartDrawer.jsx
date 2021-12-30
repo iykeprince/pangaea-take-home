@@ -40,7 +40,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if(productByCurrency.data){
-            dispatch(updateProducts(productByCurrency.data.products))
+            // dispatch(updateProducts(productByCurrency.data.products))
             dispatch(updateCart(productByCurrency.data.products))
         }
     },[productByCurrency.data])

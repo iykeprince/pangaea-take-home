@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
-import { Box, Grid, GridItem, Text } from '@chakra-ui/layout'
+import { Box, Grid, GridItem, Center } from '@chakra-ui/layout'
 import ProductItem from './ProductItem'
 
-import { useMediaQuery } from '@chakra-ui/react'
+import { useMediaQuery, Spinner } from '@chakra-ui/react'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCollectionSkeleton from '../components/skeletons/ProductCollectionSkeleton';
@@ -33,12 +33,13 @@ const ProductCollection = () => {
     return (
         <Box bgColor="#e3e6e3" px="16" py="10">
              {error && <ErrorMessage message={error} />}
-            {loading ? <ProductCollectionSkeleton /> : <Grid templateColumns={isLargerThan768 ? `repeat(3, 1fr)` : `repeat(2, 1fr)`} gap="10">
-                {products.map((product, i) => <GridItem key={product.id}>
+           <Center> {loading && <Spinner /> }</Center>
+            <Grid templateColumns={isLargerThan768 ? `repeat(3, 1fr)` : `repeat(2, 1fr)`} gap="10">
+                {products.length > 0 && products.map((product, i) => <GridItem key={product.id}>
                     <ProductItem product={product} />
                 </GridItem>)
                 }
-            </Grid>}
+            </Grid>
         </Box>
     )
 }
