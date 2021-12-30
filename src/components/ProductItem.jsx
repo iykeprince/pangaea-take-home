@@ -11,6 +11,7 @@ import { addToCart } from '../features/cart/cartSlice'
 const ProductItem = ({ product }) => {
     const { onOpen } = useContext(ProductContext)
     const dispatch = useDispatch()
+    const currency = useSelector(state => state.product.currency)
 
     const handleClick = (product) => {
         dispatch(addToCart({...product, quantity: 1}))
@@ -28,7 +29,7 @@ const ProductItem = ({ product }) => {
                 height="200px"
             />
             <Text fontSize="12px">{product.title}</Text>
-            <Text fontSize="14px">From: ${product.price}</Text>
+            <Text fontSize="14px">From: {currency}{product.price}</Text>
             <Button title={`Add to Cart`} onClick={() => handleClick(product)} />
         </Flex>
     )

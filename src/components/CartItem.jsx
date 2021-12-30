@@ -2,11 +2,12 @@ import React from 'react'
 import { Flex, Box, Text, Link } from '@chakra-ui/layout'
 import { Image } from '@chakra-ui/image'
 import CartCounter from './CartCounter'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { deleteFromCart } from '../features/cart/cartSlice'
 
 const CartItem = ({ item }) => {
     const dispatch = useDispatch(); 
+    const currency = useSelector(state => state.product.currency)
 
     return (<Box my="2" px='4' py="2" bgColor="white" >
         <Flex justifyContent="space-between" alignItems="center">
@@ -22,7 +23,7 @@ const CartItem = ({ item }) => {
         </Flex>
         <Flex justifyContent="space-evenly">
             <CartCounter item={item} />
-            <Text>${item.quantity * item.price}</Text>
+            <Text>{currency}{item.quantity * item.price}</Text>
         </Flex>
     </Box>)
 }

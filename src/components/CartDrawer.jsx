@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Drawer,
     DrawerBody,
@@ -17,22 +17,44 @@ import Button from './Button'
 
 import CartItem from './CartItem'
 import { useQuery } from '@apollo/client'
-import { CURRENCIES_QUERY } from '../queries.graphql'
+import { CURRENCIES_QUERY, PRODUCT_CURRENCY_QUERY } from '../queries.graphql'
 import { ArrowBackIcon } from '@chakra-ui/icons'
+import { updateCurrency, updateProducts } from '../features/product/productSlice'
+import { updateCart } from '../features/cart/cartSlice'
 
 
 
 
 const CartDrawer = ({ isOpen, onClose }) => {
+    const dispatch = useDispatch()
     const cartItems = useSelector(state => state.cart.cartItems);
     const totalPrice = useSelector(state => state.cart.totalPrice)
+    const currency = useSelector(state => state.product.currency)
 
     const { loading, error, data } = useQuery(CURRENCIES_QUERY)
+    const productByCurrency = useQuery(PRODUCT_CURRENCY_QUERY, {
+        variables: {currency},
+        pollInterval: 500,
+    })
+
+    useEffect(() => {
+        if(productByCurrency.data){
+            console.log('this is called in cartDrawer')
+            dispatch(updateProducts(productByCurrency.data.products))
+            dispatch(updateCart(productByCurrency.data.products))
+        }
+    },[productByCurrency.data])
 
     const handleProceedCheckout = () => {
         alert('Proceed to checkout')
     }
-    console.log('currencies', data)
+    
+    const handleChangeCurrency = e => {
+        const selectedCurrency = e.target.value;
+        dispatch(updateCurrency(selectedCurrency))
+        productByCurrency.refetch({currency: selectedCurrency})
+    }
+    console.log('refetching example with product by currency', productByCurrency.loading, 'data', productByCurrency.data)
 
     return (
         <Drawer
@@ -48,7 +70,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
                 <Flex justifyContent="space-between" px="8">
                     <Link border="2" borderColor="blue" borderRadius="100" onClick={onClose}><ArrowBackIcon /></Link>
-                    {loading ? <Spinner /> : <Select variant='unstyled' width="50" >
+                    {loading ? <Spinner /> : <Select variant='unstyled' width="50" onChange={handleChangeCurrency} value={currency}>
                         {data.currency.map((currency, i) => <option key={i} value={currency}>{currency}</option>)}
                     </Select>}
                 </Flex>
@@ -59,7 +81,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <Box px="6">
                     <Flex justifyContent="space-between" alignItems="center">
                         <Text>SUB TOTAL</Text>
-                        <Text>${totalPrice}</Text>
+                        <Text>{currency}{totalPrice}</Text>
                     </Flex>
                 </Box>
                 <DrawerFooter>

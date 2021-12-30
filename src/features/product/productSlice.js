@@ -1,14 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const initialState = {
-    items: [],
-    loading: false
-}
 
 export const productSlice = createSlice({
     name: 'product',
-    initialState,
+    initialState: {
+        items: [],
+        currency: 'USD',
+        loading: false
+    },
     reducers: {
-        
+        updateProducts(state, {payload}){
+            console.log('payload', payload)
+           state.items = payload
+        },
+        updateCurrency(state,{payload}){
+            state.currency = payload;
+        }
     }
 })
+
+export const { updateProducts, updateCurrency } = productSlice.actions;
+
+export default productSlice.reducer;
