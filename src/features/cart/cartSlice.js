@@ -5,6 +5,8 @@ const initialState = {
     totalPrice: 0,
     totalQty: 0
 }
+const getTotalPrice = (arr) => arr.reduce((acc, item) => acc += item.price * item.quantity, 0)
+const getTotalQty = arr => arr.reduce((acc, item) => acc += item.quantity, 0);
 
 export const cartSlice = createSlice({
     name: 'cart',
@@ -21,11 +23,8 @@ export const cartSlice = createSlice({
                 return acc;
             }, [])
 
-            state.totalPrice = state.cartItems.reduce((acc, item) => {
-                acc += item.price;
-                return acc;
-            }, 0)
-            
+            state.totalPrice = getTotalPrice(state.cartItems)
+
         },
         addToCart(state, action) {
             const foundItem = state.cartItems.find(item => item.id === action.payload.id)
@@ -35,27 +34,26 @@ export const cartSlice = createSlice({
             } else {
                 state.cartItems.push(action.payload);
             }
-            state.totalPrice += action.payload.price;
-            state.totalQty += action.payload.quantity;
+            state.totalPrice = getTotalPrice(state.cartItems)
+            state.totalQty = getTotalQty(state.cartItems)
         },
         removeFromCart(state, action) {
             const index = state.cartItems.findIndex(item => item.id === action.payload.id)
 
-            if (state.cartItems[index].quantity > 1) {
+            if (state.cartItems[index].quantity > 1)
                 state.cartItems[index].quantity -= 1
-            } else {
-                console.log('poping item', state.cartItems)
+            else
                 state.cartItems = state.cartItems.filter(item => item.id !== action.payload.id)
-            }
 
-            state.totalQty = state.cartItems.reduce((acc, item) => acc += item.quantity, 0)
-            state.totalPrice = state.cartItems.reduce((acc, item) => acc += item.price * item.quantity, 0)
+
+            state.totalPrice = getTotalPrice(state.cartItems)
+            state.totalQty = getTotalQty(state.cartItems)
         },
         deleteFromCart(state, action) {
             state.cartItems = state.cartItems.filter(item => item.id !== action.payload.id)
 
-            state.totalQty = state.cartItems.reduce((acc, item) => acc += item.quantity, 0)
-            state.totalPrice = state.cartItems.reduce((acc, item) => acc += item.price * item.quantity, 0)
+            state.totalPrice = getTotalPrice(state.cartItems)
+            state.totalQty = getTotalQty(state.cartItems)
         }
 
     }

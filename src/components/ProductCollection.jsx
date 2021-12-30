@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Box, Grid, GridItem, Text } from '@chakra-ui/layout'
 import ProductItem from './ProductItem'
 
-import { Spinner, useMediaQuery } from '@chakra-ui/react'
+import { useMediaQuery } from '@chakra-ui/react'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
 import ProductCollectionSkeleton from '../components/skeletons/ProductCollectionSkeleton';
@@ -14,21 +14,18 @@ const ProductCollection = () => {
     const [isLargerThan768] = useMediaQuery('(min-width: 768px)') 
     const dispatch = useDispatch()
     const currency = useSelector(state=> state.product.currency)
+    const products = useSelector( state => state.product.items)
     const { loading, error, data } = useQuery(PRODUCT_CURRENCY_QUERY, {
         variables: {
             currency
-        }
+        },
+        pollInterval: 500
     })
-      console.log('loading', loading)
-      console.log('error', error)
-      console.log('data', data)
-
-      const products = useSelector( state => state.product.items)
+      
 
       useEffect(() => {
           
          if(data) {
-             console.log('products', data.products)
              dispatch(updateProducts(data.products))
          }
       }, [data])

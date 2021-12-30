@@ -40,7 +40,6 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
     useEffect(() => {
         if(productByCurrency.data){
-            console.log('this is called in cartDrawer')
             dispatch(updateProducts(productByCurrency.data.products))
             dispatch(updateCart(productByCurrency.data.products))
         }

@@ -10,7 +10,8 @@ const Header = () => {
     const { onOpen } = useContext(ProductContext)
 
     return (
-        <Flex px="16" py="4">
+        <Box position="fixed" bgColor="#f6f6f6" width="full" top="0">
+        <Flex px="16" py="4" >
             <Flex>
                 <Box ><Text letterSpacing="10px" fontSize="22">LUMIN</Text></Box>
                 <Box px="3" py="1"><Link fontSize="14">Shop</Link></Box>
@@ -24,6 +25,8 @@ const Header = () => {
                 </Flex>
             </Flex>
         </Flex>
+        <hr />
+        </Box>
     )
 }
 

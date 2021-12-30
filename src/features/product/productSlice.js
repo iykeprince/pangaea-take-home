@@ -9,11 +9,16 @@ export const productSlice = createSlice({
         loading: false
     },
     reducers: {
-        updateProducts(state, {payload}){
-            console.log('payload', payload)
-           state.items = payload
+        updateProducts(state, { payload }) {
+           
+            state.items = state.items.length > 0 ? payload.reduce((acc, item) => {
+                const foundItem = state.items.find(r => r.id === item.id)
+                const index = state.items.findIndex(r => r.id === item.id)
+                acc[index] = { ...foundItem, price: item.price }
+                return acc;
+            }, []) : payload
         },
-        updateCurrency(state,{payload}){
+        updateCurrency(state, { payload }) {
             state.currency = payload;
         }
     }
