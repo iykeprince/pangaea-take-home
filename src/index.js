@@ -4,9 +4,31 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { ChakraProvider } from '@chakra-ui/react'
+import { Provider } from 'react-redux';
+import store from './app/store';
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  useQuery,
+  gql
+} from "@apollo/client";
+
+const client = new ApolloClient({
+  uri: 'https://pangaea-interviews.now.sh/api/graphql',
+  cache: new InMemoryCache()
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <ApolloProvider client={client}>
+        <ChakraProvider>
+          <App />
+        </ChakraProvider>
+      </ApolloProvider>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
