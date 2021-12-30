@@ -5,7 +5,7 @@ import ProductItem from './ProductItem'
 import { Spinner, useMediaQuery } from '@chakra-ui/react'
 import { useQuery } from '@apollo/client'
 import { useDispatch, useSelector } from 'react-redux'
-// import ProductCollectionSkeleton from '../components/skeletons/ProductCollectionSkeleton';
+import ProductCollectionSkeleton from '../components/skeletons/ProductCollectionSkeleton';
 import { PRODUCT_CURRENCY_QUERY, PRODUCT_QUERY } from '../queries.graphql';
 import { updateProducts } from '../features/product/productSlice'
 import ErrorMessage from './ErrorMessage'
@@ -36,7 +36,7 @@ const ProductCollection = () => {
     return (
         <Box bgColor="#e3e6e3" px="16" py="10">
              {error && <ErrorMessage message={error} />}
-            {loading ? <Spinner /> : <Grid templateColumns={isLargerThan768 ? `repeat(3, 1fr)` : `repeat(2, 1fr)`} gap="10">
+            {loading ? <ProductCollectionSkeleton /> : <Grid templateColumns={isLargerThan768 ? `repeat(3, 1fr)` : `repeat(2, 1fr)`} gap="10">
                 {products.map((product, i) => <GridItem key={product.id}>
                     <ProductItem product={product} />
                 </GridItem>)

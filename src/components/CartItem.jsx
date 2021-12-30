@@ -24,7 +24,7 @@ const CartItem = ({ item }) => {
                 <Image src={item.image_url} boxSize="8" />
             </Flex>
         </Flex>
-        <Flex justifyContent="space-evenly">
+        <Flex justifyContent="space-evenly" alignItems="center">
             <CartCounter item={item} />
             <Text>{getSymbolFromCurrency(currency)}{formatValue(item.quantity * item.price)}</Text>
         </Flex>
